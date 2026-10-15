@@ -1,0 +1,22 @@
+# Paths are relative to the repository root; run all scripts from there.
+[directories]
+ppc_families = "data/ppc_families.ftr"
+english_oa_ids = "data/english_oa_ids.txt"
+english_oa_text = "data/english_oa_text.parquet"
+output_dir = "output"
+target_file = "data/patents_to_publications.jsonl"
+
+[datasets]
+oa_english_repl = "E:/PROJECTS/Logic_Mill/publications_index/data/40_final"
+pcs_oa = "F:/reliance_on_science_data/2024-07/_pcs_oa.csv"
+
+[parameters]
+n_positive = 5
+n_negative = 25
+n_queries = 10_000  # families drawn at random as queries
+seed = 42
+
+[sql]
+host = 's-harhoffdb1'
+port = 3306
+schema = 'patstat_s26'

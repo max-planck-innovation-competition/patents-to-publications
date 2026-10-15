@@ -1,0 +1,125 @@
+# Central model configuration for benchmarking
+# This file contains all model information used across the project
+
+# NOTE: The order of entries below defines the order used in benchmark
+# tables and plots (see get_model_order() in src/models_config.py) and the
+# job-submission order in the generated models.mk. Keep it intentional.
+models:
+  bert_large_uncased:
+    huggingface_id: google-bert/bert-large-uncased
+    display_name: BERT-large-uncased
+    directory_name: bert-large-uncased
+    pooling: mean  # default pooling for plotting/significance tests
+    include_in_csv: true
+
+  scibert_scivocab_uncased:
+    huggingface_id: allenai/scibert_scivocab_uncased
+    display_name: SciBERT-scivocab-uncased
+    directory_name: scibert_scivocab_uncased
+    pooling: mean
+    include_in_csv: true
+
+  patent_sberta:
+    huggingface_id: AI-Growth-Lab/PatentSBERTa
+    display_name: PatentSBERTa
+    directory_name: patent_sberta
+    pooling: cls
+    include_in_csv: true
+
+  specter:
+    huggingface_id: allenai/specter
+    display_name: SPECTER
+    directory_name: specter
+    pooling: mean
+    include_in_csv: true
+
+  specter2_base:
+    huggingface_id: allenai/specter2_base
+    display_name: SPECTER 2 Base
+    directory_name: specter2_base
+    pooling: cls
+    include_in_csv: true
+
+  e5_large_v2:
+    huggingface_id: intfloat/e5-large-v2
+    display_name: E5-large-v2
+    directory_name: e5_large_v2
+    pooling: mean
+    include_in_csv: true
+
+  bert_for_patents:
+    huggingface_id: anferico/bert-for-patents
+    display_name: BERT for Patents
+    directory_name: bert_for_patents
+    pooling: mean
+    include_in_csv: true
+
+  gte_large:
+    huggingface_id: thenlper/gte-large
+    display_name: GTE-large
+    directory_name: gte_large
+    pooling: mean
+    include_in_csv: true
+
+  bge_large_en_v1_5:
+    huggingface_id: BAAI/bge-large-en-v1.5
+    display_name: BGE-large-en-v1.5
+    directory_name: bge_large_en_v1.5
+    pooling: mean
+    include_in_csv: true
+
+  patembed_retrieval_IN:
+    huggingface_id: datalyes/patembed-large
+    display_name: patembed-large (IN)
+    directory_name: patembed_large_IN
+    pooling: mean
+    normalize: true # embeddings = F.normalize(embeddings, p=2, dim=1)
+    q_text: "encode query for same document retrieval: " # include separator
+    doc_text: "encode document for same retrieval: "
+    include_in_csv: true
+  
+  patembed_retrieval_OUT:
+    huggingface_id: datalyes/patembed-large
+    display_name: patembed-large (OUT)
+    directory_name: patembed_large_OUT
+    pooling: mean
+    normalize: true # embeddings = F.normalize(embeddings, p=2, dim=1)
+    q_text: "encode query for different document retrieval: " # include separator
+    doc_text: "encode document for different retrieval: " # include separator
+    include_in_csv: false
+
+  patembed_retrieval_MIXED:
+    huggingface_id: datalyes/patembed-large
+    display_name: patembed-large (MIXED)
+    directory_name: patembed_large_MIXED
+    pooling: mean
+    normalize: true # embeddings = F.normalize(embeddings, p=2, dim=1)
+    q_text: "encode query for mixed document retrieval: " # include separator
+    doc_text: "encode document for mixed retrieval: " # include separator
+    include_in_csv: true
+
+  pat_specter:
+    huggingface_id: mpi-inno-comp/pat_specter
+    display_name: Pat-SPECTER
+    directory_name: pat_specter
+    pooling: cls
+    include_in_csv: true
+
+  paecter:
+    huggingface_id: mpi-inno-comp/paecter
+    display_name: PaECTER
+    directory_name: paecter
+    pooling: mean
+    include_in_csv: true
+
+  pub_paecter:
+    huggingface_id: null
+    display_name: Pub-PaECTER
+    directory_name: pubpaecter
+    pooling: mean
+    include_in_csv: false
+
+# BM25 is not a transformer model, handled separately
+bm25:
+  display_name: BM25
+  directory_name: bm25

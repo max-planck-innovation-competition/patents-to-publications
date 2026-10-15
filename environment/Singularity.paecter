@@ -1,0 +1,68 @@
+Bootstrap: docker
+From: ubuntu:noble
+
+%labels
+
+AUTHOR Mainak
+
+%post
+apt update
+apt upgrade -y
+
+# Basic tools
+apt-get install -y software-properties-common curl wget git git-lfs net-tools nano vim build-essential
+
+# Add deadsnakes PPA and install Python 3.8
+add-apt-repository ppa:deadsnakes/ppa -y
+apt update
+apt install -y python3.8 python3.8-venv python3.8-dev
+
+# Install pip for Python 3.8
+curl -sS https://bootstrap.pypa.io/pip/3.8/get-pip.py | python3.8
+
+# Upgrade pip and setuptools
+python3.8 -m pip install --upgrade pip setuptools --break-system-packages
+
+# Install core dependencies
+python3.8 -m pip install --no-cache-dir "numpy<2.0" "pyarrow>=14.0.1" --break-system-packages
+
+# Other packages
+python3.8 -m pip install --no-cache-dir numpy \
+    scipy \
+    statsmodels \
+    scikit-learn \
+    jsonmerge \
+    jsonlines \
+    pynvml \
+    seaborn \
+    matplotlib \
+    rank-bm25 \
+    pyyaml --break-system-packages
+
+# Install PyTorch 2.0.1 with CUDA 11.7
+python3.8 -m pip install --no-cache-dir torch==2.0.1 torchvision==0.15.2 torchaudio==2.0.2 \
+    --index-url https://download.pytorch.org/whl/cu117 \
+    --break-system-packages
+
+# Huggingface ecosystem
+python3.8 -m pip install --no-cache-dir transformers==4.27.1 \
+    datasets==2.14.6 \
+    accelerate==0.19.0 \
+    evaluate==0.4.0 \
+    tensorboard==2.13.0 \
+    safetensors==0.4.3 \
+    "huggingface_hub<0.20.0" --break-system-packages
+
+# Sentence-transformers from GitHub
+# NOTE: We use our own fork and pin to a specific commit hash
+# commit hash: 8af96bfe1f6b965eee61a0b794474c391e651752
+python3.8 -m pip install --no-cache-dir sentence-transformers@git+https://github.com/max-planck-innovation-competition/sentence-transformers.git@8af96bfe1f6b965eee61a0b794474c391e651752 \
+    --break-system-packages
+
+# Make python3 point to python3.8 explicitly
+update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.8 1
+
+# Cleanup
+rm -rf /root/.cache
+apt clean
+rm -rf /var/lib/apt/lists/*
