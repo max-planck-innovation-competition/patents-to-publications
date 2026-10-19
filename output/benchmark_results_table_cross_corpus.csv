@@ -1,0 +1,17 @@
+model_display,url,RFR_mean,RFR_cls,MRR@10_mean,MRR@10_cls,NDCG@10_mean,NDCG@10_cls,MAP_mean,MAP_cls
+BGE-large-en-v1.5,https://huggingface.co/BAAI/bge-large-en-v1.5,1.0383,1.0456,98.89,98.7,97.5,96.85,95.55,94.61
+E5-large-v2,https://huggingface.co/intfloat/e5-large-v2,1.0486,1.0613,98.39,98.11,95.31,93.76,92.29,90.48
+Pat-SPECTER,https://huggingface.co/mpi-inno-comp/pat_specter,1.1142,1.0717,96.59,97.9,92.55,95.61,88.7,92.51
+patembed-large (IN),https://huggingface.co/datalyes/patembed-large,1.0513,1.0758,98.54,97.66,96.58,95.17,94.04,91.63
+patembed-large (MIXED),https://huggingface.co/datalyes/patembed-large,1.0428,1.0765,98.69,97.49,97.02,95.05,94.64,91.25
+SPECTER,https://huggingface.co/allenai/specter,1.1727,1.0869,95.52,97.32,89.39,94.32,85.43,91.2
+PaECTER,https://huggingface.co/mpi-inno-comp/paecter,1.0779,1.0882,97.93,97.52,94.37,92.64,91.19,88.86
+SPECTER 2 Base,https://huggingface.co/allenai/specter2_base,1.1951,1.0923,94.83,97.0,86.42,94.39,81.69,90.52
+PatentSBERTa,https://huggingface.co/AI-Growth-Lab/PatentSBERTa,1.0945,1.0938,96.92,97.11,92.12,92.17,87.75,88.03
+SPECTER2 + proximity,https://huggingface.co/allenai/specter2_base,1.2352,1.1151,93.37,96.4,85.44,93.21,80.2,88.95
+BERT for Patents,https://huggingface.co/anferico/bert-for-patents,1.1072,1.183,96.72,93.57,91.36,85.49,87.41,79.88
+Pub-PaECTER,,1.3425,1.4342,91.89,89.6,82.14,78.43,76.76,72.64
+patembed-large (OUT),https://huggingface.co/datalyes/patembed-large,1.0379,1.4709,98.77,86.56,96.89,79.89,94.48,73.23
+BERT-large-uncased,https://huggingface.co/google-bert/bert-large-uncased,1.2897,2.3718,91.4,69.73,85.72,54.23,79.67,48.01
+GTE-large,https://huggingface.co/thenlper/gte-large,1.0733,2.4356,98.25,74.56,95.36,56.07,92.98,50.62
+SciBERT-scivocab-uncased,https://huggingface.co/allenai/scibert_scivocab_uncased,1.5867,3.1141,87.76,64.56,75.14,47.44,69.61,43.05
