@@ -6,7 +6,7 @@ from src import config
 from src.models.test_model import test_model_with_ranking
 from src.models.test_bm25 import test as test_bm25
 from src.models_config import (get_model_q_text, get_model_doc_text,
-                                get_model_normalize)
+                                get_model_normalize, get_model_adapter)
 
 
 def test_ranking(model_dir_path: str = "./output",
@@ -25,11 +25,13 @@ def test_ranking(model_dir_path: str = "./output",
     q_text = get_model_q_text(model_dir_name)
     doc_text = get_model_doc_text(model_dir_name)
     normalize = get_model_normalize(model_dir_name)
+    adapter = get_model_adapter(model_dir_name)
 
     # absolute paths
     # test
     test_model_with_ranking(model_dir_path, test_dataset_path, pooling_mode,
-                           q_text=q_text, doc_text=doc_text, normalize=normalize)
+                           q_text=q_text, doc_text=doc_text, normalize=normalize,
+                           adapter=adapter)
 
 
 if __name__ == '__main__':

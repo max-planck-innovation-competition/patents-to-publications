@@ -9,7 +9,7 @@ Metrics: RFR (rank of first relevant), MAP, MRR@10, nDCG@10.
 The workflow has two parts:
 
 1. **Data preparation**, run locally (needs access to PATSTAT on MySQL and to our OpenAlex index).
-2. **Benchmark**, run on the MPCDF Raven cluster inside an Apptainer container with SLURM GPU jobs.
+2. **Benchmark**, run on the MPCDF Raven cluster using Python and SLURM GPU jobs.
 
 All scripts are run from the repository root. Inputs and intermediate files go to `data/` (not committed), all results to `output/`.
 
@@ -65,12 +65,12 @@ git clone git@github.com:max-planck-innovation-competition/patents-to-publicatio
 cd patents-to-publications
 ```
 
-The container `~/CONTAINERS/paecter` is the same as in [cross-corpus_testing](https://github.com/max-planck-innovation-competition/cross-corpus_testing). Copy it from there, or build it with `make build-container` (definition: `environment/Singularity.paecter`).
+Use the same Python environment as [publications-to-publications](https://github.com/max-planck-innovation-competition/publications-to-publications), with `statsmodels` installed for the significance test. Activate the environment before running Make. The Makefile passes its Python executable to the SLURM jobs; no container is needed.
 
 Download the models:
 
 ```sh
-module load apptainer git-lfs
+module load git-lfs
 make download-pretrained-models   # from Hugging Face
 make download-pubpaecter          # PubPaECTER (not on Hugging Face) from MPDL Keeper
 ```

@@ -12,6 +12,7 @@ MODELS = \
 	patent_sberta \
 	specter \
 	specter2_base \
+	specter2_proximity \
 	e5_large_v2 \
 	bert_for_patents \
 	gte_large \
@@ -36,6 +37,7 @@ download-pretrained-models:
 	@test -d $(PRETRAINED_DIR)/patent_sberta || git clone --progress https://huggingface.co/AI-Growth-Lab/PatentSBERTa $(PRETRAINED_DIR)/patent_sberta
 	@test -d $(PRETRAINED_DIR)/specter || git clone --progress https://huggingface.co/allenai/specter $(PRETRAINED_DIR)/specter
 	@test -d $(PRETRAINED_DIR)/specter2_base || git clone --progress https://huggingface.co/allenai/specter2_base $(PRETRAINED_DIR)/specter2_base
+	@test -d $(PRETRAINED_DIR)/specter2_proximity || git clone --progress https://huggingface.co/allenai/specter2_base $(PRETRAINED_DIR)/specter2_proximity
 	@test -d $(PRETRAINED_DIR)/e5_large_v2 || git clone --progress https://huggingface.co/intfloat/e5-large-v2 $(PRETRAINED_DIR)/e5_large_v2
 	@test -d $(PRETRAINED_DIR)/bert_for_patents || git clone --progress https://huggingface.co/anferico/bert-for-patents $(PRETRAINED_DIR)/bert_for_patents
 	@test -d $(PRETRAINED_DIR)/gte_large || git clone --progress https://huggingface.co/thenlper/gte-large $(PRETRAINED_DIR)/gte_large

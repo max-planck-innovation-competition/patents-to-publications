@@ -107,3 +107,12 @@ def get_model_normalize(directory_name: str) -> bool:
         if info['directory_name'] == directory_name:
             return info.get('normalize', False)
     return False
+
+
+def get_model_adapter(directory_name: str) -> Optional[str]:
+    """Get adapter for a given directory_name."""
+    models = get_all_models()
+    for info in models.values():
+        if info['directory_name'] == directory_name:
+            return info.get('adapter')
+    return None

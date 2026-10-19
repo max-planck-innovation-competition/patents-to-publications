@@ -88,7 +88,8 @@ def test_model_with_ranking(model_path: str,
                             pooling_mode: str = 'cls',
                             q_text: str = None,
                             doc_text: str = None,
-                            normalize: bool = False):
+                            normalize: bool = False,
+                            adapter: str = None):
     """
     Rank-aware evaluation
     """
@@ -99,6 +100,11 @@ def test_model_with_ranking(model_path: str,
     transformer = models.Transformer(
         model_path
     )
+    if adapter:
+        import adapters
+        adapters.init(transformer.auto_model)
+        transformer.auto_model.load_adapter(adapter, source="hf", set_active=True)
+
     pooling = models.Pooling(
         transformer.get_word_embedding_dimension(),
         pooling_mode=pooling_mode

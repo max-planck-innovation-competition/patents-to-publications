@@ -40,11 +40,21 @@ models:
     pooling: cls
     include_in_csv: true
 
+  specter2_proximity:
+    huggingface_id: allenai/specter2_base
+    display_name: SPECTER2 + proximity
+    directory_name: specter2_proximity
+    adapter: allenai/specter2
+    pooling: cls
+    include_in_csv: true
+
   e5_large_v2:
     huggingface_id: intfloat/e5-large-v2
     display_name: E5-large-v2
     directory_name: e5_large_v2
     pooling: mean
+    q_text: "query: "
+    doc_text: "passage: "
     include_in_csv: true
 
   bert_for_patents:

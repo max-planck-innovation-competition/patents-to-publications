@@ -2,14 +2,8 @@
 # CONFIGURATION
 # ============
 BASE_PATH := $(CURDIR)
-SINGULARITY_CONTAINER := $(HOME)/CONTAINERS/paecter
-# `module load apptainer` is chained here so it runs in the SAME shell as the
-# `singularity` call (each recipe line is its own subshell). PYTHONPATH is passed
-# via --env so it reaches the container regardless of recipe-line prefixes.
-SINGULARITY_EXEC := module load apptainer &&  module load git-lfs && singularity exec --bind $(BASE_PATH) --env PYTHONPATH=$(BASE_PATH) $(SINGULARITY_CONTAINER)
-
-# Python 3.11+ environment with requirements.txt, used for data preparation
-PYTHON ?= python
+# Use the active Python environment for data preparation and benchmarks.
+PYTHON ?= $(shell which python)
 
 PRETRAINED_DIR := $(BASE_PATH)/pretrained_models
 DATA_DIR := $(BASE_PATH)/data
@@ -22,17 +16,6 @@ OUTPUT_DIR := $(BASE_PATH)/output
 # from models_config.yaml. Regenerate with:
 #   make generate-makefile-models
 include models.mk
-
-# ============
-# CONTAINER
-# ============
-
-build-container:
-	@echo "Building container..."
-	mkdir -p $(dir $(SINGULARITY_CONTAINER))
-	cd environment && \
-	module load apptainer && \
-	apptainer build $(SINGULARITY_CONTAINER) Singularity.paecter
 
 # ============
 # DATA PREPARATION (local, needs PATSTAT access, see README)
@@ -54,7 +37,7 @@ download-pubpaecter:
 
 generate-makefile-models:
 	@echo "Generating models.mk from models_config.yaml (requires pyyaml)..."
-	PYTHONPATH=$(BASE_PATH) python3 ./generate_makefile_models.py
+	"$(PYTHON)" ./generate_makefile_models.py
 
 # ============
 # PRE-FLIGHT CHECKS
@@ -93,27 +76,27 @@ test: check-data check-models
 	rm -rf "$(OUTPUT_DIR)/ranking"
 
 	@echo "Testing BM25"
-	$(SINGULARITY_EXEC) python3 ./src/main.py test-bm25 --test-dataset-path "$(TEST_DATA)"
+	"$(PYTHON)" -m src.main test-bm25 --test-dataset-path "$(TEST_DATA)"
 
 	@echo "Testing all transformer models"
 	mkdir -p $(LOG_DIR)
-	@for model in $(MODELS); do \
+	@set -e; for model in $(MODELS); do \
 		echo "Submitting $$model"; \
-		cd $(JOB_DIR) && sbatch \
+		sbatch \
 			--job-name=test-$$model \
 			--output=$(LOG_DIR)/test-$${model}_%A_%a.out \
-			test_model.sh $$model $(TEST_DATA); \
+			"$(JOB_DIR)/test_model.sh" "$$model" "$(TEST_DATA)" "$(PYTHON)"; \
 	done
 
 # =======================
 # RESULTS
 # =======================
 generate-table:
-	$(SINGULARITY_EXEC) python3 ./src/models/generate_benchmark_table.py
+	"$(PYTHON)" -m src.models.generate_benchmark_table
 
 test-significance:
 	@echo "Conducting statistical significance test"
-	$(SINGULARITY_EXEC) python3 ./src/significance_test/on_cross_corpus_data.py
+	"$(PYTHON)" -m src.significance_test.on_cross_corpus_data
 
 clean-logs:
 	rm -rf $(LOG_DIR)
