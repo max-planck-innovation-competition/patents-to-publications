@@ -1,0 +1,25 @@
+\begin{tabular}{lcccc}
+\toprule
+Model & Avg. RFR & MRR@10 & nDCG@10 & MAP \\
+\midrule
+BERT-large-uncased (Mean) & 0.25\sym{***} (0.01) & -7.49\sym{***} (0.21) & -11.78\sym{***} (0.16) & -15.89\sym{***} (0.18) \\
+SciBERT-scivocab-uncased (Mean) & 0.55\sym{***} (0.02) & -11.13\sym{***} (0.26) & -22.36\sym{***} (0.23) & -25.95\sym{***} (0.23) \\
+PatentSBERTa (CLS) & 0.06\sym{***} (0.01) & -1.78\sym{***} (0.12) & -5.34\sym{***} (0.11) & -7.52\sym{***} (0.12) \\
+SPECTER (CLS) & 0.05\sym{***} (0.00) & -1.57\sym{***} (0.12) & -3.18\sym{***} (0.09) & -4.36\sym{***} (0.11) \\
+SPECTER 2 Base (CLS) & 0.05\sym{***} (0.00) & -1.89\sym{***} (0.12) & -3.11\sym{***} (0.08) & -5.04\sym{***} (0.11) \\
+SPECTER2 + proximity (CLS) & 0.08\sym{***} (0.01) & -2.49\sym{***} (0.13) & -4.29\sym{***} (0.10) & -6.61\sym{***} (0.12) \\
+E5-large-v2 (Mean) & 0.01\sym{**} (0.00) & -0.50\sym{***} (0.09) & -2.19\sym{***} (0.07) & -3.26\sym{***} (0.08) \\
+BERT for Patents (Mean) & 0.07\sym{***} (0.01) & -2.17\sym{***} (0.14) & -6.14\sym{***} (0.12) & -8.14\sym{***} (0.14) \\
+GTE-large (Mean) & 0.04\sym{***} (0.00) & -0.64\sym{***} (0.08) & -2.15\sym{***} (0.07) & -2.58\sym{***} (0.08) \\
+patembed-large (IN) (Mean) & 0.01\sym{**} (0.00) & -0.35\sym{***} (0.09) & -0.92\sym{***} (0.07) & -1.51\sym{***} (0.08) \\
+patembed-large (OUT) (Mean) & -0.00 (0.00) & -0.12 (0.09) & -0.61\sym{***} (0.07) & -1.08\sym{***} (0.08) \\
+patembed-large (MIXED) (Mean) & 0.00 (0.00) & -0.20\sym{*} (0.08) & -0.49\sym{***} (0.06) & -0.91\sym{***} (0.08) \\
+Pat-SPECTER (CLS) & 0.03\sym{***} (0.00) & -0.99\sym{***} (0.10) & -1.89\sym{***} (0.07) & -3.04\sym{***} (0.09) \\
+PaECTER (Mean) & 0.04\sym{***} (0.01) & -0.96\sym{***} (0.10) & -3.13\sym{***} (0.09) & -4.36\sym{***} (0.10) \\
+Pub-PaECTER (Mean) & 0.30\sym{***} (0.01) & -7.00\sym{***} (0.22) & -15.36\sym{***} (0.20) & -18.79\sym{***} (0.21) \\
+BM25 & 0.43\sym{***} (0.01) & -10.32\sym{***} (0.25) & -23.57\sym{***} (0.21) & -27.70\sym{***} (0.21) \\
+\midrule
+Observations & 10,000 & 10,000 & 10,000 & 10,000 \\
+\bottomrule
+\end{tabular}
+% Notes: Mean per-query difference to BGE-large-en-v1.5 (mean pooling); MRR@10, nDCG@10 and MAP in percentage points. Standard errors of the paired t-test in parentheses. Significance levels: * p<0.05, ** p<0.01, *** p<0.001.

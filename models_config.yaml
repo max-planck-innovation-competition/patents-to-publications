@@ -30,7 +30,7 @@ models:
     huggingface_id: allenai/specter
     display_name: SPECTER
     directory_name: specter
-    pooling: mean
+    pooling: cls
     include_in_csv: true
 
   specter2_base:

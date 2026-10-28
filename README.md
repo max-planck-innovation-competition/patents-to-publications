@@ -65,7 +65,7 @@ git clone git@github.com:max-planck-innovation-competition/patents-to-publicatio
 cd patents-to-publications
 ```
 
-Use the same Python environment as [publications-to-publications](https://github.com/max-planck-innovation-competition/publications-to-publications), with `statsmodels` installed for the significance test. Activate the environment before running Make. The Makefile passes its Python executable to the SLURM jobs; no container is needed.
+Use the same Python environment as [publications-to-publications](https://github.com/max-planck-innovation-competition/publications-to-publications), with `scipy` installed for the significance test. Activate the environment before running Make. The Makefile passes its Python executable to the SLURM jobs; no container is needed.
 
 Download the models:
 
@@ -94,7 +94,8 @@ make test-significance
 | `output/ranking/{cls,mean,bm25}/` | Per model: aggregate scores (`..._results.csv`) and per-query scores (`..._whole_sample_results.csv`) |
 | `output/benchmark_results_table.tex` | LaTeX table, CLS and mean pooling (without BM25) |
 | `output/benchmark_results_table_cross_corpus.csv` | Same table as CSV, consumed by [lm-vue-client](https://github.com/max-planck-innovation-competition/lm-vue-client) |
-| `output/patspecter_significance_test.tex` | OLS regressions of per-query scores on model dummies, Pat-SPECTER as reference |
+| `output/significance_test.csv` | Paired tests of per-query scores (t-test, Wilcoxon signed-rank, bootstrapped 95% CI) for all pairs of models, each at its default pooling, and BM25 |
+| `output/significance_test.tex` | LaTeX table: per-query difference of each model to BGE-large-en-v1.5, with paired t-test standard errors |
 
 ## Models
 
@@ -103,7 +104,7 @@ make test-significance
 - `huggingface_id`: repository to download from (`null` for PubPaECTER)
 - `display_name`: name in tables
 - `directory_name`: folder in `pretrained_models/` and key in result file names
-- `pooling`: default pooling used for the significance test
+- `pooling`: default pooling used for the significance test (the better of CLS and mean)
 - optional `normalize` (L2-normalize embeddings) and `q_text`/`doc_text` (prefixes for query and candidate texts, used by patembed)
 - `include_in_csv`
 
