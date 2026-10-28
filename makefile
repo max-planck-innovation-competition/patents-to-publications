@@ -96,7 +96,7 @@ generate-table:
 
 test-significance:
 	@echo "Conducting statistical significance test"
-	"$(PYTHON)" -m src.significance_test.on_cross_corpus_data
+	"$(PYTHON)" -m src.significance_test
 
 clean-logs:
 	rm -rf $(LOG_DIR)
