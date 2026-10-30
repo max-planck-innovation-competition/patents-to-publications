@@ -41,7 +41,7 @@ python 03_merge_and_analyse.py      # patent texts from PATSTAT, citation-lag an
 | `output/02_missing_patents.log` | Patents not found in PATSTAT |
 | `output/kde_citation-lag.pdf` | Distribution of the time lag between citing patent and cited paper |
 
-Parameters (number of positives and negatives, seed) are set in `config.toml`.
+Parameters (number of positives and negatives, seed) and all paths are set in `config.toml`, which the benchmark also reads: the test data is `target_file` and results go to `output_dir`. Neither can be passed on the command line.
 
 Then upload the test data to MPCDF:
 
@@ -65,7 +65,7 @@ git clone git@github.com:max-planck-innovation-competition/patents-to-publicatio
 cd patents-to-publications
 ```
 
-Use the same Python environment as [publications-to-publications](https://github.com/max-planck-innovation-competition/publications-to-publications), with `scipy` installed for the significance test. Activate the environment before running Make. The Makefile passes its Python executable to the SLURM jobs; no container is needed.
+Use the same Python environment as [publications-to-publications](https://github.com/max-planck-innovation-competition/publications-to-publications), with `scipy` installed for the significance test and Python ≥ 3.11 (to read `config.toml`). Activate the environment before running Make. The Makefile passes its Python executable to the SLURM jobs; no container is needed.
 
 Download the models:
 

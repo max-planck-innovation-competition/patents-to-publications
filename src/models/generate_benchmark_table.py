@@ -1,5 +1,3 @@
-from pathlib import Path
-
 import pandas as pd
 
 from src import config
@@ -167,7 +165,7 @@ def generate_latex_table(results_df):
 
 
 def main():
-    input_dir = Path(config.Config.OUTPUT_PATH) / "ranking"
+    input_dir = config.OUTPUT_PATH / "ranking"
     cls_result_df = load_pooling_results(input_dir / "cls", "CLS")
     mean_result_df = load_pooling_results(input_dir / "mean", "mean")
 
@@ -187,7 +185,7 @@ def main():
     results = results.sort_values("model")
     results["model_display"] = results["model"].map(model_labels)
 
-    output_dir = Path(config.Config.OUTPUT_PATH)
+    output_dir = config.OUTPUT_PATH
     output_dir.mkdir(parents=True, exist_ok=True)
 
     generate_csv_table(results, output_dir)

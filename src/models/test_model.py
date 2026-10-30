@@ -9,6 +9,7 @@ import json
 import os
 import sys
 import logging
+from pathlib import Path
 import torch
 from tqdm.autonotebook import trange
 from sentence_transformers import (SentenceTransformer,
@@ -41,12 +42,12 @@ def read_jsonl(dataset_path):
                 ) from error
 
 
-def load_test_data(dataset_path: str, sep_token: str = ' [SEP] ', q_text: str = None, doc_text: str = None):
+def load_test_data(dataset_path: Path, sep_token: str = ' [SEP] ', q_text: str = None, doc_text: str = None):
     """
     concatenate title and abstract of query, positive and negative samples, using sep_token, particularly for TEST data
     Parameters
     ----------
-    dataset_path: str (path to test dataset)
+    dataset_path: Path (path to test dataset)
     sep_token: str = ' [SEP] '
     q_text: str = None (prefix to add to query text)
     doc_text: str = None (prefix to add to positive and negative texts)
@@ -84,7 +85,7 @@ def load_test_data(dataset_path: str, sep_token: str = ' [SEP] ', q_text: str = 
 
 
 def test_model_with_ranking(model_path: str,
-                            test_dataset_path: str,
+                            test_dataset_path: Path,
                             pooling_mode: str = 'cls',
                             q_text: str = None,
                             doc_text: str = None,
@@ -122,7 +123,7 @@ def test_model_with_ranking(model_path: str,
     # concatenate title and abstract
     data_test = load_test_data(test_dataset_path, q_text=q_text, doc_text=doc_text)
 
-    OUTPUT_PATH: str = f"{config.Config.OUTPUT_PATH}/ranking/{pooling_mode}"
+    OUTPUT_PATH = config.OUTPUT_PATH / "ranking" / pooling_mode
 
     result = evaluate_ranking(
         model,

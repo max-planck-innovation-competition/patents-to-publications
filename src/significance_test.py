@@ -7,18 +7,18 @@ differences between two models: paired t-test, Wilcoxon signed-rank test and a
 bootstrapped 95% confidence interval of the mean difference. Each transformer
 model enters at its default pooling from models_config.yaml; BM25 is included.
 
-Outputs (in ./output):
+Outputs (in the output directory from config.toml):
 - significance_test.tex: difference of each model to the reference model
   (BGE), paired t-test standard errors in parentheses
 - significance_test.csv: all pairwise comparisons with all three tests
 """
 from itertools import combinations
-from pathlib import Path
 
 import numpy as np
 import pandas as pd
 from scipy import stats
 
+from src import config
 from src.models_config import (
     get_all_models,
     get_bm25_directory_name,
@@ -27,8 +27,8 @@ from src.models_config import (
 
 
 # --- Config ---
-SCORES_DIR = Path("./output/ranking")
-DEST_DIR = Path("./output")
+SCORES_DIR = config.OUTPUT_PATH / "ranking"
+DEST_DIR = config.OUTPUT_PATH
 DEST_DIR.mkdir(parents=True, exist_ok=True)
 
 # Model the others are compared against in the LaTeX table

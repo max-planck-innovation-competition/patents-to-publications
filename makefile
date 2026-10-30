@@ -6,11 +6,12 @@ BASE_PATH := $(CURDIR)
 PYTHON ?= $(shell which python)
 
 PRETRAINED_DIR := $(BASE_PATH)/pretrained_models
-DATA_DIR := $(BASE_PATH)/data
-TEST_DATA := $(DATA_DIR)/patents_to_publications.jsonl
 JOB_DIR := $(BASE_PATH)/jobs
 LOG_DIR := $(BASE_PATH)/logs/test_model
-OUTPUT_DIR := $(BASE_PATH)/output
+# Paths come only from config.toml; command-line values are ignored.
+override TEST_DATA := $(shell "$(PYTHON)" -m src.config directories.target_file)
+override OUTPUT_DIR := $(shell "$(PYTHON)" -m src.config directories.output_dir)
+$(if $(and $(TEST_DATA),$(OUTPUT_DIR)),,$(error Could not read paths from config.toml with $(PYTHON)))
 
 # MODELS list and the download-pretrained-models target are auto-generated
 # from models_config.yaml. Regenerate with:
@@ -76,7 +77,7 @@ test: check-data check-models
 	rm -rf "$(OUTPUT_DIR)/ranking"
 
 	@echo "Testing BM25"
-	"$(PYTHON)" -m src.main test-bm25 --test-dataset-path "$(TEST_DATA)"
+	"$(PYTHON)" -m src.main test-bm25
 
 	@echo "Testing all transformer models"
 	mkdir -p $(LOG_DIR)
@@ -85,7 +86,7 @@ test: check-data check-models
 		sbatch \
 			--job-name=test-$$model \
 			--output=$(LOG_DIR)/test-$${model}_%A_%a.out \
-			"$(JOB_DIR)/test_model.sh" "$$model" "$(TEST_DATA)" "$(PYTHON)"; \
+			"$(JOB_DIR)/test_model.sh" "$$model" "$(PYTHON)"; \
 	done
 
 # =======================

@@ -3,12 +3,13 @@ This script is used to test the BM25 model on the test data.
 """
 import json
 import os
+from pathlib import Path
 from rank_bm25 import BM25Okapi
 from sklearn.metrics import average_precision_score, ndcg_score
 from .. import config
 
 
-def load_data(dataset_path: str) -> list:
+def load_data(dataset_path: Path) -> list:
     """
     Load the data from the dataset
     :param dataset_path: the path to the dataset
@@ -80,13 +81,13 @@ def test_ranking_per_test_case(test_data: dict) -> dict:
     return result
 
 
-def test(test_data_path: str):
+def test(test_data_path: Path):
     """
     Test the BM25 model on the test data
     :param test_data_path: the path to the test data
     :return: None
     """
-    OUTPUT_PATH: str = f"{config.Config.OUTPUT_PATH}/ranking/bm25/"
+    OUTPUT_PATH: str = f"{config.OUTPUT_PATH.as_posix()}/ranking/bm25/"
     os.makedirs(OUTPUT_PATH, exist_ok=True)
     
     whole_sample_results_file_path = OUTPUT_PATH + 'bm25_whole_sample_results.csv'
@@ -123,4 +124,4 @@ def test(test_data_path: str):
 
 
 if __name__ == "__main__":
-    test("./data/patents_to_publications.jsonl")
+    test(config.TEST_DATASET_PATH)
