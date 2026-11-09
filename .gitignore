@@ -205,8 +205,11 @@ __marimo__/
 *Thumbs.db
 *.DS_Store
 
+# Large files
+*.ftr
+*.parquet
+
 # Project
-data/*
 !data/.gitkeep
 pretrained_models/
 logs/

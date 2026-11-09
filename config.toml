@@ -5,6 +5,9 @@ english_oa_ids = "data/english_oa_ids.txt"
 english_oa_text = "data/english_oa_text.parquet"
 output_dir = "output"
 target_file = "data/patents_to_publications.jsonl"
+ep_xy_npl_cache = "data/ep_xy_npl_query.parquet"
+sample_citations = "data/sample_citations.csv"
+sample_npl = "data/sample_npl.csv"
 
 [datasets]
 oa_english_repl = "E:/PROJECTS/Logic_Mill/publications_index/data/40_final"
@@ -14,6 +17,8 @@ pcs_oa = "F:/reliance_on_science_data/2024-07/_pcs_oa.csv"
 n_positive = 5
 n_negative = 25
 n_queries = 10_000  # families drawn at random as queries
+n_xy_sample = 1_000  # families drawn at random as queries
+xy_oversample = 1.0
 seed = 42
 
 [sql]
