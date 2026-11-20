@@ -85,7 +85,7 @@ test: check-data check-models
 		echo "Submitting $$model"; \
 		sbatch \
 			--job-name=test-$$model \
-			--output=$(LOG_DIR)/test-$${model}_%A_%a.out \
+			--output=$(LOG_DIR)/test-$${model}_%j.out \
 			"$(JOB_DIR)/test_model.sh" "$$model" "$(PYTHON)"; \
 	done
 
