@@ -43,7 +43,66 @@ python 03_merge_and_analyse.py      # patent texts from PATSTAT, citation-lag an
 
 Parameters (number of positives and negatives, seed) and all paths are set in `config.toml`, which the benchmark also reads: the test data is `target_file` and results go to `output_dir`. Neither can be passed on the command line.
 
-Then upload the test data to MPCDF:
+## 2. Setup on MPCDF (once per user)
+
+Log in to Raven:
+
+```sh
+ssh -m hmac-sha2-512 ${USERNAME}@gate1.mpcdf.mpg.de
+ssh raven
+```
+
+To clone via SSH, Raven needs its own SSH key registered with GitHub (once per user). Generate it (Enter accepts the default path, passphrase optional) and print the public key:
+
+```sh
+ssh-keygen -t ed25519 -C "${USER}@raven"
+cat ~/.ssh/id_ed25519.pub
+```
+
+Add it to your personal GitHub profile (not the organisation's settings): profile picture → *Settings → SSH and GPG keys → New SSH key*, choose *Key type: Authentication Key*, and paste the printed line.
+The following line confirms that it works:
+
+```sh
+ssh -T git@github.com   # "Hi <user>! You've successfully authenticated ..."
+```
+
+Then clone the repo:
+
+```sh
+cd ~/PROJECTS
+git clone git@github.com:max-planck-innovation-competition/patents-to-publications.git
+cd patents-to-publications
+```
+
+Alternatively, clone via `https://github.com/max-planck-innovation-competition/patents-to-publications.git` and enter a GitHub personal access token (*Settings → Developer settings*) as the password.
+
+Raven only gets what is pushed to GitHub, so commit and push local changes first.
+
+Create the Python environment in `.venv` inside the repo (gitignored):
+
+```sh
+module load python-waterboa/2025.06
+python3 --version   # 3.13.5
+python3 -m venv .venv
+source .venv/bin/activate
+pip install --upgrade pip
+pip install "torch>=2.3,<3" adapters==1.2.0 pandas==2.2.3 PyYAML==6.0.2 rank-bm25==0.2.2 \
+    scikit-learn==1.7.1 sentence-transformers==5.1.0 transformers==4.51.3 tqdm==4.67.1 scipy
+```
+
+Download the models into `pretrained_models/` (gitignored), with the environment still active:
+
+```sh
+module load git-lfs
+make download-pretrained-models   # from Hugging Face
+make download-pubpaecter          # PubPaECTER (not on Hugging Face) from MPDL Keeper
+```
+
+Models already present are skipped, so after adding a model to `models_config.yaml` the same commands fetch only the new one. If a download was interrupted, delete that model's folder and run them again.
+
+## 3. Benchmark on MPCDF
+
+Upload the test data to MPCDF:
 
 ```sh
 export USERNAME=your_username
@@ -53,33 +112,26 @@ scp -C -o MACs=hmac-sha2-512 \
     ${USERNAME}@raven.mpcdf.mpg.de:~/PROJECTS/patents-to-publications/data/
 ```
 
-## 2. Benchmark on MPCDF
-
-### Setup
+In every new login, load the Python module and activate the environment before running Make. The Makefile passes this Python executable to the SLURM jobs; no container is needed.
 
 ```sh
 ssh -m hmac-sha2-512 ${USERNAME}@gate1.mpcdf.mpg.de
 ssh raven
-cd ~/PROJECTS
-git clone git@github.com:max-planck-innovation-competition/patents-to-publications.git
-cd patents-to-publications
+cd ~/PROJECTS/patents-to-publications
+module load python-waterboa/2025.06
+source .venv/bin/activate
 ```
 
-Use the same Python environment as [publications-to-publications](https://github.com/max-planck-innovation-competition/publications-to-publications), with `scipy` installed for the significance test and Python ≥ 3.11 (to read `config.toml`). Activate the environment before running Make. The Makefile passes its Python executable to the SLURM jobs; no container is needed.
-
-Download the models:
-
-```sh
-module load git-lfs
-make download-pretrained-models   # from Hugging Face
-make download-pubpaecter          # PubPaECTER (not on Hugging Face) from MPDL Keeper
-```
-
-### Run
+Then run the tests:
 
 ```sh
 make test          # BM25 inline, then one SLURM job per model (CLS and mean pooling)
-squeue --me        # wait until all jobs are finished
+```
+
+You regularly check the status :
+```sh
+squeue --me        # done when only the header is left (ST: PD = pending, R = running)
+sacct -X -S today --format=JobID,JobName%28,State,Elapsed   # all jobs should be COMPLETED
 make check-logs
 make generate-table
 make test-significance
