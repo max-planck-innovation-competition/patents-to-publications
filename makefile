@@ -76,11 +76,12 @@ test: check-data check-models
 	@echo "Deleting $(OUTPUT_DIR)/ranking"
 	rm -rf "$(OUTPUT_DIR)/ranking"
 
-	@echo "Testing BM25"
-	"$(PYTHON)" -m src.main test-bm25
+	@echo "Submitting BM25"
+	mkdir -p $(LOG_DIR)
+	sbatch --job-name=test-bm25 --output=$(LOG_DIR)/test-bm25_%j.out \
+		"$(JOB_DIR)/test_bm25.sh" "$(PYTHON)"
 
 	@echo "Testing all transformer models"
-	mkdir -p $(LOG_DIR)
 	@set -e; for model in $(MODELS); do \
 		echo "Submitting $$model"; \
 		sbatch \

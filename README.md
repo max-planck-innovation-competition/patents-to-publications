@@ -125,7 +125,7 @@ source .venv/bin/activate
 Then run the tests:
 
 ```sh
-make test          # BM25 inline, then one SLURM job per model (CLS and mean pooling)
+make test          # one SLURM job for BM25 (CPU) and one per model (CLS and mean pooling, GPU)
 ```
 
 You regularly check the status :
